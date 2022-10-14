@@ -2,12 +2,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const path = require("path");
-const fs = require("fs");
-const coord = require("./coordinates");
+const sharp = require("sharp");
+var fs = require("fs");
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// read JSON asset file
+let rawdata = fs.readFileSync("asset.json");
+let asset = JSON.parse(rawdata);
 
 const colors = [
   "#800000",
@@ -155,21 +159,42 @@ const svg = `<svg width="2048" height="2048" xmlns="http://www.w3.org/2000/svg">
 <style>.base { font-family: Lato,sans-serif; margin:100px;}</style>
 <g>
   <rect x="0" y="0" width="2048" height="2048" fill="{2}" stroke-width="3px"/>
-  <text x="10%" y="50%" style="fill: {1}; stroke: #000000; font-size: 260px;">
+  <text x="15%" y="50%" style="fill: {1}; stroke: #000000; font-size: 260px;">
     Вірю в ЗСУ!
 </text>
 </g>
 </svg>
 `;
+
 let cards = [];
 for (i = 0; i < 139; i++) {
-    let s = svg.replace("{1}", colors[139-i]);
-    s = s.replace("{2}", colors[i]);
-    // console.log(s);
-    // console.log("");
-    cards.push(
-      "data:image/svg+xml;base64," + Buffer.from(s).toString("base64")
+  // generate svg
+  let s = svg.replace("{1}", colors[139 - i]);
+  s = s.replace("{2}", colors[i]);
+  cards.push("data:image/svg+xml;base64," + Buffer.from(s).toString("base64"));
+
+  if (false) {
+    // convert svg to png
+    sharp(new Buffer.from(s))
+      .toFile("assets/" + i + ".png")
+      .catch((err) => {
+        console.error(err);
+      });
+
+    // update asset
+    asset.image = i + ".png";
+    asset.properties.files.uri = i + ".png";
+    asset.attributes.value = i;
+
+    // write json file
+    fs.writeFile(
+      "assets/" + i + ".json",
+      JSON.stringify(asset),
+      function (err) {
+        if (err) throw err;
+      }
     );
+  }
 }
 
 app.get("/", (req, res) => {

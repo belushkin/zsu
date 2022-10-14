@@ -1,20 +1,29 @@
 {
-  "name": "nft",
+  "name": "zsu",
   "version": "1.0.0",
-  "description": "",
+  "description": "NFT collection for OpenSea",
   "main": "app.js",
   "scripts": {
     "start": "nodemon -e js,ejs"
   },
   "keywords": [],
-  "author": "",
+  "author": "Max Belushkin",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^3.1.2",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "sharp": "^0.31.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/belushkin/zsu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/belushkin/zsu/issues"
+  },
+  "homepage": "https://github.com/belushkin/zsu#readme"
 }
