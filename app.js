@@ -13,6 +13,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 let rawdata = fs.readFileSync("asset.json");
 let asset = JSON.parse(rawdata);
 
+let collectionrawdata = fs.readFileSync("collection.json");
+let collection = JSON.parse(collectionrawdata);
+
 const colors = [
   "#800000",
   "#8B0000",
@@ -166,6 +169,52 @@ const svg = `<svg width="2048" height="2048" xmlns="http://www.w3.org/2000/svg">
 </svg>
 `;
 
+const collectionsvg = `<svg width="2048" height="2048" xmlns="http://www.w3.org/2000/svg">
+<style>.base { font-family: Lato,sans-serif; margin:100px;}</style>
+<g>
+  <rect x="0" y="0" width="2048" height="2048" fill="#D3D3D3" stroke-width="3px"/>
+<text x="15%" y="10%" style="fill: #E6E6FA; stroke: #000000; font-size: 260px;">
+    Вірю в ЗСУ!
+</text>
+
+<text x="15%" y="25%" style="fill: #FFDAB9; stroke: #000000; font-size: 260px;">
+    Вірю в ЗСУ!
+</text>
+
+<text x="15%" y="40%" style="fill: #8B0000; stroke: #000000; font-size: 260px;">
+    Вірю в ЗСУ!
+</text>
+
+<text x="15%" y="55%" style="fill: #DDA0DD; stroke: #000000; font-size: 260px;">
+    Вірю в ЗСУ!
+</text>
+
+<text x="15%" y="70%" style="fill: #8A2BE2; stroke: #000000; font-size: 260px;">
+    Вірю в ЗСУ!
+</text>
+
+<text x="15%" y="85%" style="fill: #3CB371; stroke: #000000; font-size: 260px;">
+    Вірю в ЗСУ!
+</text>
+<text x="15%" y="98%" style="fill: #FFA07A; stroke: #000000; font-size: 260px;">
+    Вірю в ЗСУ!
+</text>
+</g>
+</svg>`;
+
+// generate collection image
+if (false) {
+  // convert svg to png
+  sharp(new Buffer.from(collectionsvg))
+    .toFile("assets/collection.png")
+    .catch((err) => {
+      console.error(err);
+    });
+  // write json file
+  fs.writeFile("assets/collection.json", JSON.stringify(collection), function (err) {
+    if (err) throw err;
+  });
+}
 let cards = [];
 for (i = 0; i < 139; i++) {
   // generate svg
